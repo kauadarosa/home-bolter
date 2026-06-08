@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clube Bolter | Re-Leituras</title>
+    
+    <!-- Fontes Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #082946;
+            --secondary-blue: #113658;
+            --accent-gold: #cfaa6b;
+            --white: #ffffff;
+            --bg-card: #ffffff;
+            --text-dark: #082946;
+            --shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            font-family: 'Times New Roman', Times, serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- ESTILOS GERAIS (DESKTOP FIRST) --- */
+
+        h1, h2, h3, .brand, .card-title, .highlight-title, select, .status-badge {
+            font-family: 'Playfair Display', serif;
+        }
+
+        header {
+            padding: 25px 5%;
+            background-color: var(--primary-blue);
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .brand {
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.3; /* Melhora o espaçamento entre linhas se quebrar */
+        }
+
+        .sub-brand {
+            font-size: 1rem;
+            opacity: 0.8;
+            font-family: 'Times New Roman', serif;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        main {
+            padding: 40px 5%;
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Destaques (Ranking/Recomendação) */
+        .highlights-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .highlight-box {
+            background: rgba(255,255,255,0.03);
+            padding: 25px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .highlight-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mini-list { list-style: none; }
+        .mini-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .mini-list li:last-child { border-bottom: none; }
+        .mini-list strong { color: var(--white); font-weight: normal; font-size: 1.1rem; }
+        .mini-list small { color: #aaa; font-style: italic; }
+
+        /* Controles */
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .search-bar {
+            flex: 2;
+            min-width: 250px;
+            padding: 15px;
+            border-radius: 4px;
+            border: none;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.1rem;
+        }
+
+        .filter-select {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px;
+            border-radius: 4px;
+            border: none;
+            font-family: 'Playfair Display', serif;
+            background: var(--white);
+            color: var(--text-dark);
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Grid de Livros Desktop */
+        .library-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .book-card {
+            background-color: var(--bg-card);
+            color: var(--text-dark);
+            border-radius: 8px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .book-card:hover { transform: translateY(-5px); }
+
+        .card-header {
+            padding: 25px 20px 10px 20px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .book-id-tag {
+            background: #f0f0f0;
+            color: #666;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-family: sans-serif;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .card-author {
+            font-size: 1rem;
+            color: #555;
+            font-style: italic;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 4px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #888;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-family: sans-serif;
+        }
+
+        .card-footer {
+            padding: 20px;
+            background: #fafafa;
+            border-top: 1px solid #eee;
+        }
+
+        .status-badge {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .status-disponivel { background-color: #e6f4ea; color: #137333; }
+        .status-emprestado { background-color: #fce8e6; color: #c5221f; }
+        .status-atraso { background-color: #fff0e0; color: #e65100; border: 1px solid #ffcc80;}
+        .status-manutencao { background-color: #fef7e0; color: #b06000; }
+        .status-reservado { background-color: #e8f0fe; color: #1967d2; }
+        .status-indisponivel { background-color: #f1f3f4; color: #5f6368; }
+
+        .dates-container { font-size: 0.85rem; color: #444; }
+        .date-row { display: flex; justify-content: space-between; margin-top: 5px; }
+        .date-row span:first-child { font-weight: bold; }
+
+        .error-msg { text-align: center; color: #ffcccb; padding: 20px; font-size: 1.2rem; }
+        #loading { text-align: center; padding: 50px; font-size: 1.5rem; font-family: 'Playfair Display'; }
+
+
+        /* --- VERSÃO MOBILE (AJUSTES) --- */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+            
+            .brand {
+                /* Reduzi levemente a fonte para evitar quebra indesejada */
+                font-size: 1.5rem; 
+                margin-bottom: 5px;
+            }
+
+            main {
+                padding: 20px 15px;
+            }
+
+            .highlights-section {
+                grid-template-columns: 1fr; 
+                gap: 20px;
+            }
+
+            .highlight-title {
+                font-size: 1.1rem;
+            }
+
+            .mini-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .mini-list li span {
+                line-height: 1.3;
+            }
+
+            .controls {
+                flex-direction: column;
+                padding: 15px;
+            }
+            .search-bar, .filter-select {
+                width: 100%;
+                min-width: unset;
+                font-size: 1rem;
+            }
+
+            .library-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .card-header {
+                padding: 20px 15px 10px 15px;
+            }
+
+            .card-title {
+                font-size: 1.4rem;
+            }
+
+            .card-body, .card-footer {
+                padding: 15px;
+            }
+            
+            .status-badge {
+                font-size: 0.85rem;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- 
+            ALTERAÇÃO AQUI: 
+            Usei o código "&#8209;" no lugar do hífen normal. 
+            Isso é um "Non-Breaking Hyphen", que proíbe o navegador 
+            de separar as palavras "Re" e "Leituras".
+        -->
+        <div class="brand">Biblioteca Bolter | Re&#8209;Leituras</div>
+        <div class="sub-brand">Biblioteca Virtual</div>
+    </header>
+
+    <main>
+        <!-- Recomendações e Ranking -->
+        <section class="highlights-section">
+            <!-- Recomendação -->
+            <div class="highlight-box">
+                <h3 class="highlight-title">✨ Recomendação do Dia</h3>
+                <ul class="mini-list" id="recommendations-list">
+                    <!-- Javascript vai preencher -->
+                </ul>
+            </div>
+            
+            <!-- Ranking -->
+            <div class="highlight-box">
+                <h3 class="highlight-title">🏆 Top Empréstimos</h3>
+                <ul class="mini-list" id="ranking-list">
+                    <!-- Javascript vai preencher -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- Filtros -->
+        <div class="controls">
+            <input type="text" id="searchInput" class="search-bar" placeholder="Buscar por título, autor ou código ID...">
+            <select id="statusFilter" class="filter-select">
+                <option value="all">Todos os Status</option>
+                <option value="Na Prateleira">Na Prateleira</option>
+                <option value="Emprestado">Emprestado</option>
+                <option value="Reservado">Reservado</option>
+                <option value="Em Atraso">Em Atraso</option>
+                <option value="Em Manutenção">Em Manutenção</option>
+                <option value="Indisponível Temporariamente">Indisponível</option>
+            </select>
+        </div>
+
+        <!-- Grid de Resultados -->
+        <div id="loading">Carregando acervo do clube...</div>
+        <div class="library-grid" id="libraryGrid"></div>
+    </main>
+
+    <script>
+        // URL da Planilha em CSV
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQdc9BQuUWrIcjsAk7y0rFrVrCL6rOGNVoxi0xMyDjJrca1M3wUWIGGyR8wBXY6ueuM8sPNQDVnYSmz/pub?output=csv';
+
+        // Mapeamento das Colunas
+        const COLS = {
+            ID: 0,       // A
+            TITLE: 1,    // B
+            AUTHOR: 2,   // C
+            GENRE: 3,    // D
+            YEAR: 4,     // E
+            STATUS: 14,  // O
+            OUT_DATE: 16,// Q
+            DUE_DATE: 17,// R
+            LOAN_COUNT: 19 // T (Para Ranking)
+        };
+
+        let libraryData = [];
+
+        // Parser CSV
+        function parseCSV(text) {
+            const rows = [];
+            let row = [];
+            let cell = "";
+            let inQuotes = false;
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const nextChar = text[i+1];
+
+                if (char === '"') {
+                    if (inQuotes && nextChar === '"') {
+                        cell += '"';
+                        i++; 
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    row.push(cell);
+                    cell = "";
+                } else if ((char === '\r' || char === '\n') && !inQuotes) {
+                    if (cell || row.length > 0) row.push(cell);
+                    if (row.length > 0) rows.push(row);
+                    row = [];
+                    cell = "";
+                    if (char === '\r' && nextChar === '\n') i++; 
+                } else {
+                    cell += char;
+                }
+            }
+            if (cell || row.length > 0) { row.push(cell); rows.push(row); }
+            return rows;
+        }
+
+        // Função de Limpeza
+        function cleanText(text) {
+            if (!text) return "";
+            if (text.includes("#VALUE") || text.includes("#N/A") || text.includes("#REF")) return "";
+            return text.trim();
+        }
+
+        function getStatusClass(status) {
+            if (!status) return 'status-indisponivel';
+            const s = status.toLowerCase();
+            if (s.includes('prateleira')) return 'status-disponivel';
+            if (s.includes('emprestado')) return 'status-emprestado';
+            if (s.includes('atraso')) return 'status-atraso';
+            if (s.includes('manutenção')) return 'status-manutencao';
+            if (s.includes('reservado')) return 'status-reservado';
+            return 'status-indisponivel';
+        }
+
+        async function init() {
+            try {
+                const response = await fetch(SHEET_URL);
+                const csvText = await response.text();
+                const rawRows = parseCSV(csvText);
+
+                // Remover cabeçalho
+                rawRows.shift();
+
+                libraryData = rawRows.map(row => {
+                    const title = cleanText(row[COLS.TITLE]);
+                    
+                    if (!title || title.toLowerCase().includes('sem título')) {
+                        return null;
+                    }
+
+                    return {
+                        id: cleanText(row[COLS.ID]),
+                        title: title,
+                        author: cleanText(row[COLS.AUTHOR]) || "Autor Desconhecido",
+                        genre: cleanText(row[COLS.GENRE]),
+                        year: cleanText(row[COLS.YEAR]),
+                        status: cleanText(row[COLS.STATUS]) || "Indefinido",
+                        outDate: cleanText(row[COLS.OUT_DATE]),
+                        dueDate: cleanText(row[COLS.DUE_DATE]),
+                        loanCount: parseInt(row[COLS.LOAN_COUNT]) || 0 
+                    };
+                }).filter(item => item !== null);
+
+                document.getElementById('loading').style.display = 'none';
+                
+                generateRecommendations();
+                generateRanking();
+                renderBooks(libraryData);
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('loading').innerHTML = `<div class="error-msg">Erro ao carregar dados. Verifique a conexão.</div>`;
+            }
+        }
+
+        function generateRecommendations() {
+            const list = document.getElementById('recommendations-list');
+            const available = libraryData.filter(b => b.status.toLowerCase().includes('prateleira'));
+            const pool = available.length >= 3 ? available : libraryData;
+            const random = [...pool].sort(() => 0.5 - Math.random()).slice(0, 3);
+            
+            list.innerHTML = random.map(b => `
+                <li>
+                    <span><strong>${b.title}</strong></span>
+                    <small>${b.author}</small>
+                </li>
+            `).join('');
+        }
+
+        function generateRanking() {
+            const list = document.getElementById('ranking-list');
+            const top3 = [...libraryData].sort((a, b) => b.loanCount - a.loanCount).slice(0, 3);
+
+            list.innerHTML = top3.map((b, i) => `
+                <li>
+                    <span>${i+1}º <strong>${b.title}</strong></span>
+                    <small>(${b.loanCount} empréstimos)</small>
+                </li>
+            `).join('');
+        }
+
+        function renderBooks(books) {
+            const grid = document.getElementById('libraryGrid');
+            grid.innerHTML = '';
+
+            if (books.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; font-size: 1.2rem; padding: 20px;">Nenhum livro encontrado.</p>';
+                return;
+            }
+
+            books.forEach(book => {
+                const statusClass = getStatusClass(book.status);
+                
+                let dateHtml = '';
+                if (book.outDate || book.dueDate) {
+                    dateHtml += '<div class="dates-container">';
+                    if (book.outDate) dateHtml += `<div class="date-row"><span>Retirada:</span> <span>${book.outDate}</span></div>`;
+                    if (book.dueDate) {
+                        const isLate = book.status.toLowerCase().includes('atraso');
+                        dateHtml += `<div class="date-row" style="color:${isLate ? '#d32f2f' : 'inherit'}"><span>Devolução:</span> <span>${book.dueDate}</span></div>`;
+                    }
+                    dateHtml += '</div>';
+                }
+
+                const html = `
+                    <div class="book-card">
+                        <div class="card-header">
+                            <span class="book-id-tag">${book.id}</span>
+                            <h2 class="card-title">${book.title}</h2>
+                            <div class="card-author">${book.author}</div>
+                        </div>
+                        <div class="card-body">
+                            ${book.genre ? `
+                            <div class="info-row">
+                                <span class="info-label">Gênero</span>
+                                <span>${book.genre}</span>
+                            </div>` : ''}
+                            ${book.year ? `
+                            <div class="info-row">
+                                <span class="info-label">Ano</span>
+                                <span>${book.year}</span>
+                            </div>` : ''}
+                        </div>
+                        <div class="card-footer">
+                            <span class="status-badge ${statusClass}">${book.status}</span>
+                            ${dateHtml}
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += html;
+            });
+        }
+
+        function applyFilters() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const status = document.getElementById('statusFilter').value;
+
+            const filtered = libraryData.filter(book => {
+                const matchesTerm = book.title.toLowerCase().includes(term) || 
+                                    book.author.toLowerCase().includes(term) || 
+                                    book.id.toLowerCase().includes(term);
+                
+                const matchesStatus = status === 'all' || book.status === status;
+
+                return matchesTerm && matchesStatus;
+            });
+
+            renderBooks(filtered);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        document.getElementById('statusFilter').addEventListener('change', applyFilters);
+
+        window.onload = init;
+
+    </script>
+</body>
+</html>
