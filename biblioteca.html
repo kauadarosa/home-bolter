@@ -4,6 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clube Bolter | Re-Leituras</title>
+
+<style>
+    .btn-voltar-inteligente {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        background: transparent;
+        color: #ffffff;
+        text-decoration: none;
+        z-index: 999999; /* Garante que fica no topo sem empurrar nenhum elemento */
+        
+        /* A MÁGICA: Inverte a cor do botão baseado no fundo da página automaticamente */
+        mix-blend-mode: difference; 
+        
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        cursor: pointer;
+    }
+
+    /* Animação sutil ao passar o mouse */
+    .btn-voltar-inteligente:hover {
+        transform: scale(1.1) translateX(-3px);
+    }
+
+    /* Força o ícone interno a seguir a cor inteligente */
+    .btn-voltar-inteligente svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+    }
+</style>
+
+<a href="index.html" class="btn-voltar-inteligente" title="Voltar para a página inicial">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+</a>
     
     <!-- Fontes Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -634,21 +678,6 @@
         border-color: rgba(10, 31, 48, 0.2);
         transform: translateX(-4px); /* A setinha empurra para a esquerda */
         box-shadow: 0 6px 20px rgba(10, 31, 48, 0.08);
-    }
-
-    /* Ícone da seta interna */
-    .btn-voltar-home svg {
-        transition: transform 0.3s ease;
-    }
-</style>
-
-<a href="index.html" class="btn-voltar-home">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="19" y1="12" x2="5" y2="12"></line>
-        <polyline points="12 19 5 12 12 5"></polyline>
-    </svg>
-    Voltar
-</a>
 
     </script>
 </body>
